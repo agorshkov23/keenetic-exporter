@@ -1,5 +1,7 @@
 .gradle
 build/
+src/main/resources/application-*.yml
+target/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/

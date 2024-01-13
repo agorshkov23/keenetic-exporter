@@ -9,3 +9,11 @@ management:
     export:
       prometheus:
         enabled: true
+
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          keenetic-rci:
+            url: ${exporter.keenetic.client.url}
