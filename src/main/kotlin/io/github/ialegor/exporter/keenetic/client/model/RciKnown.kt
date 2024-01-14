@@ -1,4 +1,4 @@
-package io.github.ialegor.prometheus.exporter.keenetic.client.model
+package io.github.ialegor.exporter.keenetic.client.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

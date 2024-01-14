@@ -1,12 +1,12 @@
-package io.github.ialegor.prometheus.exporter.keenetic.service
+package io.github.ialegor.exporter.keenetic.service
 
 import feign.FeignException
-import io.github.ialegor.prometheus.exporter.keenetic.client.KeeneticRciClient
-import io.github.ialegor.prometheus.exporter.keenetic.client.model.AuthRequest
-import io.github.ialegor.prometheus.exporter.keenetic.client.model.RciKnownResponse
-import io.github.ialegor.prometheus.exporter.keenetic.client.model.RciShowAssociationsResponse
-import io.github.ialegor.prometheus.exporter.keenetic.config.KeeneticClientProperties
-import io.github.ialegor.prometheus.exporter.keenetic.domain.ClientMetrics
+import io.github.ialegor.exporter.keenetic.client.KeeneticRciClient
+import io.github.ialegor.exporter.keenetic.client.model.AuthRequest
+import io.github.ialegor.exporter.keenetic.client.model.RciKnownResponse
+import io.github.ialegor.exporter.keenetic.client.model.RciShowAssociationsResponse
+import io.github.ialegor.exporter.keenetic.config.KeeneticClientProperties
+import io.github.ialegor.exporter.keenetic.domain.ClientMetrics
 import jakarta.annotation.PostConstruct
 import org.springframework.stereotype.Service
 import java.security.MessageDigest

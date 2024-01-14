@@ -1,4 +1,4 @@
-package io.github.ialegor.prometheus.exporter.keenetic.config
+package io.github.ialegor.exporter.keenetic.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 

@@ -1,4 +1,4 @@
-package io.github.ialegor.prometheus.exporter.keenetic
+package io.github.ialegor.exporter.keenetic
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan

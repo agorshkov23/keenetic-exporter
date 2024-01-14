@@ -1,4 +1,4 @@
-package io.github.ialegor.prometheus.exporter.keenetic.domain
+package io.github.ialegor.exporter.keenetic.domain
 
 import java.time.Duration
 

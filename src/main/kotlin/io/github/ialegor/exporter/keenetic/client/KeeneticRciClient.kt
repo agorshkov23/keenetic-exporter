@@ -1,8 +1,8 @@
-package io.github.ialegor.prometheus.exporter.keenetic.client
+package io.github.ialegor.exporter.keenetic.client
 
-import io.github.ialegor.prometheus.exporter.keenetic.client.model.AuthRequest
-import io.github.ialegor.prometheus.exporter.keenetic.client.model.RciKnownResponse
-import io.github.ialegor.prometheus.exporter.keenetic.client.model.RciShowAssociationsResponse
+import io.github.ialegor.exporter.keenetic.client.model.AuthRequest
+import io.github.ialegor.exporter.keenetic.client.model.RciKnownResponse
+import io.github.ialegor.exporter.keenetic.client.model.RciShowAssociationsResponse
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

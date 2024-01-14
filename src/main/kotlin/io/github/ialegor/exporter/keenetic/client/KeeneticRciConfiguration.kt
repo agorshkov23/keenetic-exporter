@@ -1,11 +1,11 @@
-package io.github.ialegor.prometheus.exporter.keenetic.client
+package io.github.ialegor.exporter.keenetic.client
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.json.JsonMapper
 import feign.*
 import feign.codec.Decoder
 import feign.codec.ErrorDecoder
-import io.github.ialegor.prometheus.exporter.keenetic.config.KeeneticClientProperties
+import io.github.ialegor.exporter.keenetic.config.KeeneticClientProperties
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

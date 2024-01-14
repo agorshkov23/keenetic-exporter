@@ -1,7 +1,7 @@
-package io.github.ialegor.prometheus.exporter.keenetic
+package io.github.ialegor.exporter.keenetic
 
-import io.github.ialegor.prometheus.exporter.keenetic.domain.ClientMetrics
-import io.github.ialegor.prometheus.exporter.keenetic.service.KeeneticService
+import io.github.ialegor.exporter.keenetic.domain.ClientMetrics
+import io.github.ialegor.exporter.keenetic.service.KeeneticService
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.MultiGauge
 import io.micrometer.core.instrument.Tags
