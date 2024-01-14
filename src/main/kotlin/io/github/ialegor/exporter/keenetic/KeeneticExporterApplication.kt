@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling
 @SpringBootApplication
 @EnableScheduling
 @EnableFeignClients
-@ConfigurationPropertiesScan(basePackages = ["io.github.ialegor.prometheus.exporter.keenetic.config"])
+@ConfigurationPropertiesScan(basePackages = ["io.github.ialegor.exporter.keenetic.config"])
 class KeeneticExporterApplication
 
 fun main(args: Array<String>) {

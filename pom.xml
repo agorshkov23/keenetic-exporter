@@ -20,6 +20,7 @@
         <start-class>io.github.ialegor.exporter.keenetic.KeeneticExporterApplicationKt</start-class>
 
         <kotlin.code.style>official</kotlin.code.style>
+        <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <kotlin.compiler.jvmTarget>17</kotlin.compiler.jvmTarget>
 
         <spring-cloud.version>2023.0.0</spring-cloud.version>
@@ -112,6 +113,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>exec</classifier>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
 
