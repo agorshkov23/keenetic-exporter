@@ -5,12 +5,16 @@ management:
         include:
           - health
           - prometheus
+
   metrics:
     export:
       prometheus:
         enabled: true
 
 spring:
+  application:
+    name: keenetic-exporter
+
   cloud:
     openfeign:
       client:
