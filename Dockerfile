@@ -40,10 +40,10 @@ FROM bellsoft/liberica-openjre-alpine:17.0.9-cds
 WORKDIR /app
 #RUN apk add --no-cache openjdk17-jre-headless
 
-COPY --from=builder dependencies/ ./
-COPY --from=builder snapshot-dependencies/ ./
-COPY --from=builder spring-boot-loader/ ./
-COPY --from=builder application/ ./
+COPY --from=builder /app/dependencies/ ./
+COPY --from=builder /app/snapshot-dependencies/ ./
+COPY --from=builder /app/spring-boot-loader/ ./
+COPY --from=builder /app/application/ ./
 
 ENV SPRING_CONFIG_ADDITIONAL_LOCATION=conf/
 
