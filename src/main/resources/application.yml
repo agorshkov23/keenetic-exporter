@@ -1,4 +1,8 @@
 management:
+  endpoint:
+    health:
+      show-details: always
+
   endpoints:
     web:
       exposure:
@@ -10,7 +14,7 @@ management:
 
   info:
     git:
-      mode: full
+      mode: simple
 
   metrics:
     export:
