@@ -3,8 +3,15 @@ management:
     web:
       exposure:
         include:
+          - configprops
           - health
+          - info
           - prometheus
+
+  info:
+    git:
+      mode: full
+
   metrics:
     export:
       prometheus:

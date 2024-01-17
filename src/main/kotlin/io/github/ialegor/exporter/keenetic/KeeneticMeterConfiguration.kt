@@ -7,7 +7,6 @@ import io.micrometer.core.instrument.MultiGauge
 import io.micrometer.core.instrument.Tags
 import io.micrometer.core.instrument.binder.BaseUnits
 import org.slf4j.LoggerFactory
-import org.springframework.boot.actuate.autoconfigure.metrics.export.prometheus.PrometheusProperties.Pushgateway
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.Scheduled
 
@@ -65,7 +64,7 @@ class KeeneticMeterConfiguration(
                 clientTxList += MultiGauge.Row.of(metric.toTags(), metric.stationAssociations.txbytes)
                 clientRxList += MultiGauge.Row.of(metric.toTags(), metric.stationAssociations.rxbytes)
                 clientTxRateList += MultiGauge.Row.of(metric.toTags(), metric.stationAssociations.txrate)
-                clientRssiList += MultiGauge.Row.of(metric.toTags(), metric.stationAssociations.txrate)
+                clientRssiList += MultiGauge.Row.of(metric.toTags(), metric.stationAssociations.rssi)
             }
         }
 
