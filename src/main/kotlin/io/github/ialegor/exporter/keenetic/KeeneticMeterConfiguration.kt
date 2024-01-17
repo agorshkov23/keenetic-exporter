@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.Scheduled
 
+//  https://www.baeldung.com/micrometer
+
 @Configuration
 class KeeneticMeterConfiguration(
     private val service: KeeneticService,
@@ -46,17 +48,32 @@ class KeeneticMeterConfiguration(
         .baseUnit("dbi")
         .register(registry)
 
-    private val ipHotspotHostRxBytes = MultiGauge
-        .builder("ip.hotspot.host.rxbytes")
-        .description("IP Hotspot host rx bytes")
-        .baseUnit(BaseUnits.BYTES)
-        .register(registry)
+//    private val ipHotspotHostRxBytes = MultiGauge
+//        .builder("ip.hotspot.host.rxbytes")
+//        .description("IP Hotspot host rx bytes")
+//        .baseUnit(BaseUnits.BYTES)
+//        .register(registry)
 
     private val ipHotspotHostTxBytes = MultiGauge
         .builder("ip.hotspot.host.txbytes")
         .description("IP Hotspot host tx bytes")
         .baseUnit(BaseUnits.BYTES)
         .register(registry)
+
+    private val ipHotspotHostRxBytesGaugeHolder = MultiGaugeHolder<ClientMetrics>(
+        registry = registry,
+        name = "ip.hotspot.host.rxbytes",
+        description = "IP Hotspot host rx bytes",
+        baseUnit = BaseUnits.BYTES,
+        mapper = { it.ipHotspotHost?.rxbytes },
+        tags = { it.toTags() },
+    )
+
+
+
+    private val gaugeHolders = listOf(
+        ipHotspotHostRxBytesGaugeHolder,
+    )
 
     @Scheduled(fixedRate = 10_000)
     fun tick() {
@@ -70,7 +87,7 @@ class KeeneticMeterConfiguration(
         val clientTxRateList = mutableListOf<MultiGauge.Row<Number>>()
         val clientRssiList = mutableListOf<MultiGauge.Row<Number>>()
 
-        val ipHotspotHostRxBytesList = mutableListOf<MultiGauge.Row<Number>>()
+//        val ipHotspotHostRxBytesList = mutableListOf<MultiGauge.Row<Number>>()
         val ipHotspotHostTxBytesList = mutableListOf<MultiGauge.Row<Number>>()
 
         for (metric in metrics) {
@@ -83,9 +100,11 @@ class KeeneticMeterConfiguration(
             }
 
             if (metric.ipHotspotHost != null) {
-                ipHotspotHostRxBytesList += MultiGauge.Row.of(metric.toTags(), metric.ipHotspotHost.rxbytes)
+//                ipHotspotHostRxBytesList += MultiGauge.Row.of(metric.toTags(), metric.ipHotspotHost.rxbytes)
                 ipHotspotHostTxBytesList += MultiGauge.Row.of(metric.toTags(), metric.ipHotspotHost.txbytes)
             }
+
+            ipHotspotHostRxBytesGaugeHolder.collect(metric)
         }
 
         clientUptime.register(clientUptimeList, true)
@@ -94,22 +113,45 @@ class KeeneticMeterConfiguration(
         clientTxRate.register(clientTxRateList, true)
         clientRssi.register(clientRssiList, true)
 
-        ipHotspotHostRxBytes.register(ipHotspotHostRxBytesList, true)
+//        ipHotspotHostRxBytes.register(ipHotspotHostRxBytesList, true)
         ipHotspotHostTxBytes.register(ipHotspotHostTxBytesList, true)
+
+        ipHotspotHostRxBytesGaugeHolder.register(true)
     }
 
     private fun ClientMetrics.toTags(): Tags {
         return Tags.of("mac", mac, "known", known)
     }
 
-//    class MultiGaugeHolder(
-//        val description: String,
-//
-//    ) {
-//        private val gauge: MultiGauge
-//
-//        init {
-//
-//        }
-//    }
+    class MultiGaugeHolder<TSource>(
+        registry: MeterRegistry,
+        name: String,
+        description: String,
+        baseUnit: String?,
+        private val mapper: (TSource) -> Number?,
+        private val tags: (TSource) -> Tags,
+    ) {
+        private val gauge: MultiGauge
+
+        init {
+            gauge = MultiGauge
+                .builder(name)
+                .description(description)
+                .baseUnit(baseUnit)
+                .register(registry)
+        }
+
+        private val rows = mutableListOf<MultiGauge.Row<Number>>()
+
+        fun collect(source: TSource) {
+            val value = mapper(source) ?: return
+
+            rows += MultiGauge.Row.of(tags(source), value)
+        }
+
+        fun register(override: Boolean) {
+            gauge.register(rows, override)
+            rows.clear()
+        }
+    }
 }
