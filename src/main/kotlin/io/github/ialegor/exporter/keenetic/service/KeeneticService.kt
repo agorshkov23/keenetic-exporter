@@ -39,9 +39,11 @@ class KeeneticService(
             ClientMetrics(
                 it.mac,
                 macToKnownMap[it.mac],
+                it,
                 Duration.ofSeconds(it.uptime.toLong()),
                 it.txbytes,
                 it.rxbytes,
+                it.txrate,
             )
         }
     }

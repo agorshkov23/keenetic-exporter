@@ -60,15 +60,15 @@ class KeeneticRciConfiguration(
         private val log = LoggerFactory.getLogger(KeeneticRciClient::class.java)
 
         override fun apply(template: RequestTemplate?) {
-            System.err.println(
-                template.toString().split("\n").joinToString("\n") { "> $it" }
-            )
+//            System.err.println(
+//                template.toString().split("\n").joinToString("\n") { "> $it" }
+//            )
         }
 
         override fun intercept(invocationContext: InvocationContext, chain: ResponseInterceptor.Chain): Any {
-            System.err.println(
-                invocationContext.response().toString().split("\n").joinToString("\n") { "< $it" }
-            )
+//            System.err.println(
+//                invocationContext.response().toString().split("\n").joinToString("\n") { "< $it" }
+//            )
 
             return chain.next(invocationContext)
         }
@@ -83,9 +83,9 @@ class KeeneticRciConfiguration(
                 template.header("cookie", cookie)
             }
 
-            System.err.println(
-                template.toString().split("\n").joinToString("\n") { "> $it" }
-            )
+//            System.err.println(
+//                template.toString().split("\n").joinToString("\n") { "> $it" }
+//            )
         }
 
         override fun intercept(invocationContext: InvocationContext, chain: ResponseInterceptor.Chain): Any {
@@ -94,9 +94,9 @@ class KeeneticRciConfiguration(
                 this.cookie = setCookieHeader
             }
 
-            System.err.println(
-                invocationContext.response().toString().split("\n").joinToString("\n") { "< $it" }
-            )
+//            System.err.println(
+//                invocationContext.response().toString().split("\n").joinToString("\n") { "< $it" }
+//            )
 
             return chain.next(invocationContext)
         }

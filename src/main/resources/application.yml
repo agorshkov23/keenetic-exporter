@@ -1,10 +1,21 @@
 management:
+  endpoint:
+    health:
+      show-details: always
+
   endpoints:
     web:
       exposure:
         include:
+          - configprops
           - health
+          - info
           - prometheus
+
+
+  info:
+    git:
+      mode: simple
 
   metrics:
     export:

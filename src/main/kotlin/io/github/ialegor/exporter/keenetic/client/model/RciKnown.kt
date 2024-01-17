@@ -15,14 +15,12 @@ data class AuthRequest(
     val password: String,
 )
 
-//data class RciRequest(
-//
-//)
-
 data class RciShowAssociationsResponse(
     val station: List<Station>
 ) {
 
+    //  https://help.keenetic.com/hc/ru/articles/115000046069
+    //  TODO: rename to RciStationAssociation
     data class Station(
         val mac: String,
         val ap: String,
@@ -45,19 +43,24 @@ data class RciShowAssociationsResponse(
         val roam: String?,
         val security: String,
     )
-
-
-//    gi: 400,
-//    rssi: -69,
-//    mcs: 4,
-//    txss: 1,
-//    ebf: false,
-//    dl-mu: false,
-//    _11: [2 elements
-//"k",
-//"v"
-//],
-//    roam: "pmk",
-//    security: "wpa2-psk"
 }
+
+data class RciIpHotspotHost(
+    val mac: String,
+    val via: String,
+    val ip: String,
+    val hostname: String,
+    val name: String,
+    val active: Boolean,
+    val rxbytes: Long,
+    val txbytes: Long,
+    val uptime: Int,
+
+    val speed: Int?,
+    val ssid: String?,
+    val ap: String?,
+    val txrate: Int?,
+    val mode: String?,
+    val security: String?,
+)
 
