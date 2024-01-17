@@ -47,7 +47,7 @@ COPY --from=builder /app/application/ ./
 
 ENV SPRING_CONFIG_ADDITIONAL_LOCATION=conf/
 
-ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
 
 # COPY --from=builder /app/target/keenetic-exporter-*-exec.jar /app/app.jar
 #COPY target/keenetic-exporter-*-exec.jar /app/app.jar
