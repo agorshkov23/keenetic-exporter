@@ -57,6 +57,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: Build and push Docker image
+        id: docker
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -64,6 +65,16 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Summary
+        run: |
+          echo "Build image:" >> $GITHUB_STEP_SUMMARY
+          echo "- Image ID: ${{ steps.docker.outputs.imageid }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Image digest: ${{ steps.docker.outputs.digest }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Image metadata:" >> $GITHUB_STEP_SUMMARY
+          echo "```json" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.docker.outputs.metadata }}" >> $GITHUB_STEP_SUMMARY
+          echo "```" >> $GITHUB_STEP_SUMMARY
 
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
       # - name: Update dependency graph
