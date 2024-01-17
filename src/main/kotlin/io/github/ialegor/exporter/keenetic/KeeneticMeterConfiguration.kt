@@ -46,6 +46,18 @@ class KeeneticMeterConfiguration(
         .baseUnit("dbi")
         .register(registry)
 
+    private val ipHotspotHostRxBytes = MultiGauge
+        .builder("ip.hotspot.host.rxbytes")
+        .description("IP Hotspot host rx bytes")
+        .baseUnit(BaseUnits.BYTES)
+        .register(registry)
+
+    private val ipHotspotHostTxBytes = MultiGauge
+        .builder("ip.hotspot.host.txbytes")
+        .description("IP Hotspot host tx bytes")
+        .baseUnit(BaseUnits.BYTES)
+        .register(registry)
+
     @Scheduled(fixedRate = 10_000)
     fun tick() {
         LoggerFactory.getLogger(this::class.java).info("get client metrics")
@@ -58,6 +70,9 @@ class KeeneticMeterConfiguration(
         val clientTxRateList = mutableListOf<MultiGauge.Row<Number>>()
         val clientRssiList = mutableListOf<MultiGauge.Row<Number>>()
 
+        val ipHotspotHostRxBytesList = mutableListOf<MultiGauge.Row<Number>>()
+        val ipHotspotHostTxBytesList = mutableListOf<MultiGauge.Row<Number>>()
+
         for (metric in metrics) {
             if (metric.stationAssociations != null) {
                 clientUptimeList += MultiGauge.Row.of(metric.toTags(), metric.stationAssociations.uptime * 1000)
@@ -65,6 +80,11 @@ class KeeneticMeterConfiguration(
                 clientRxList += MultiGauge.Row.of(metric.toTags(), metric.stationAssociations.rxbytes)
                 clientTxRateList += MultiGauge.Row.of(metric.toTags(), metric.stationAssociations.txrate)
                 clientRssiList += MultiGauge.Row.of(metric.toTags(), metric.stationAssociations.rssi)
+            }
+
+            if (metric.ipHotspotHost != null) {
+                ipHotspotHostRxBytesList += MultiGauge.Row.of(metric.toTags(), metric.ipHotspotHost.rxbytes)
+                ipHotspotHostTxBytesList += MultiGauge.Row.of(metric.toTags(), metric.ipHotspotHost.txbytes)
             }
         }
 
@@ -74,23 +94,22 @@ class KeeneticMeterConfiguration(
         clientTxRate.register(clientTxRateList, true)
         clientRssi.register(clientRssiList, true)
 
-//        clientUptime.register(
-//            metrics.map { MultiGauge.Row.of(it.toTags(), it.stationAssociations?.uptime?.let { it * 1000 })) },
-//            true,
-//        )
-//
-//        clientTx.register(
-//            metrics.map { MultiGauge.Row.of(it.toTags(), it.txBytes) },
-//            true,
-//        )
-//
-//        clientRx.register(
-//            metrics.map { MultiGauge.Row.of(it.toTags(), it.rxBytes) },
-//            true,
-//        )
+        ipHotspotHostRxBytes.register(ipHotspotHostRxBytesList, true)
+        ipHotspotHostTxBytes.register(ipHotspotHostTxBytesList, true)
     }
 
     private fun ClientMetrics.toTags(): Tags {
         return Tags.of("mac", mac, "known", known)
     }
+
+//    class MultiGaugeHolder(
+//        val description: String,
+//
+//    ) {
+//        private val gauge: MultiGauge
+//
+//        init {
+//
+//        }
+//    }
 }

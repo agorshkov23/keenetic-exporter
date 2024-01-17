@@ -3,14 +3,13 @@ package io.github.ialegor.exporter.keenetic.service
 import feign.FeignException
 import io.github.ialegor.exporter.keenetic.client.KeeneticRciClient
 import io.github.ialegor.exporter.keenetic.client.model.AuthRequest
+import io.github.ialegor.exporter.keenetic.client.model.RciIpHotspotHost
 import io.github.ialegor.exporter.keenetic.client.model.RciKnownResponse
 import io.github.ialegor.exporter.keenetic.client.model.RciShowAssociationsResponse
 import io.github.ialegor.exporter.keenetic.config.KeeneticClientProperties
 import io.github.ialegor.exporter.keenetic.domain.ClientMetrics
-import jakarta.annotation.PostConstruct
 import org.springframework.stereotype.Service
 import java.security.MessageDigest
-import java.time.Duration
 
 @Service
 class KeeneticService(
@@ -18,34 +17,29 @@ class KeeneticService(
     private val properties: KeeneticClientProperties,
 ) {
 
-    private var macToKnownMap = mutableMapOf<String, String>()
-
-    //    @PostConstruct
-    fun init() {
-        val known = getKnown()
-
-        val associations = getShowAssociations()
-
-        val i = 5
-    }
-
     fun getClientMetrics(): List<ClientMetrics> {
         val known = getKnown()
-        val associations = getShowAssociations()
-
         val macToKnownMap = known.host.entries.associateBy { it.value.mac }.mapValues { it.value.key }
 
-        return associations.station.map {
-            ClientMetrics(
-                it.mac,
-                macToKnownMap[it.mac],
-                it,
-                Duration.ofSeconds(it.uptime.toLong()),
-                it.txbytes,
-                it.rxbytes,
-                it.txrate,
-            )
+        val associations = getShowAssociations()
+        val macToStationAssociationMap = associations.station.associateBy { it.mac }
+
+        val ipHotspotHosts = getIpHotspotHosts()
+        val macToIpHotspotHostMap = ipHotspotHosts.associateBy { it.mac }
+
+        val macs = sequence<String> {
+            yieldAll(macToKnownMap.keys)
+            yieldAll(macToStationAssociationMap.keys)
+            yieldAll(macToIpHotspotHostMap.keys)
+        }.toSet()
+
+        return macs.map {  mac ->
+            ClientMetrics(mac, macToKnownMap[mac], macToStationAssociationMap[mac], macToIpHotspotHostMap[mac])
         }
+    }
+
+    private fun getIpHotspotHosts(): List<RciIpHotspotHost> {
+        return handle { client.getIpHotspotHosts() }
     }
 
     private fun getShowAssociations(): RciShowAssociationsResponse {
