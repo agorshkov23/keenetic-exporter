@@ -104,7 +104,10 @@ class KeeneticMeterConfiguration(
                 ipHotspotHostTxBytesList += MultiGauge.Row.of(metric.toTags(), metric.ipHotspotHost.txbytes)
             }
 
-            ipHotspotHostRxBytesGaugeHolder.collect(metric)
+            for (gaugeHolder in gaugeHolders) {
+                gaugeHolder.collect(metric)
+            }
+//            ipHotspotHostRxBytesGaugeHolder.collect(metric)
         }
 
         clientUptime.register(clientUptimeList, true)
@@ -116,7 +119,10 @@ class KeeneticMeterConfiguration(
 //        ipHotspotHostRxBytes.register(ipHotspotHostRxBytesList, true)
         ipHotspotHostTxBytes.register(ipHotspotHostTxBytesList, true)
 
-        ipHotspotHostRxBytesGaugeHolder.register(true)
+        for (gaugeHolder in gaugeHolders) {
+            gaugeHolder.register(true)
+        }
+//        ipHotspotHostRxBytesGaugeHolder.register(true)
     }
 
     private fun ClientMetrics.toTags(): Tags {
@@ -133,13 +139,11 @@ class KeeneticMeterConfiguration(
     ) {
         private val gauge: MultiGauge
 
-        init {
-            gauge = MultiGauge
-                .builder(name)
-                .description(description)
-                .baseUnit(baseUnit)
-                .register(registry)
-        }
+        private val gauge = MultiGauge
+            .builder(name)
+            .description(description)
+            .baseUnit(baseUnit)
+            .register(registry)
 
         private val rows = mutableListOf<MultiGauge.Row<Number>>()
 

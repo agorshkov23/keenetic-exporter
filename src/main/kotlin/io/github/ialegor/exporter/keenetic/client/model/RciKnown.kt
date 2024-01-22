@@ -3,11 +3,11 @@ package io.github.ialegor.exporter.keenetic.client.model
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class RciKnownResponse(
-    val host: Map<String, RciMac>
+    val host: Map<String, RciMac>,
 )
 
 data class RciMac(
-    val mac: String
+    val mac: String,
 )
 
 data class AuthRequest(
@@ -16,34 +16,8 @@ data class AuthRequest(
 )
 
 data class RciShowAssociationsResponse(
-    val station: List<Station>
-) {
-
-    //  https://help.keenetic.com/hc/ru/articles/115000046069
-    //  TODO: rename to RciStationAssociation
-    data class Station(
-        val mac: String,
-        val ap: String,
-        val psm: Boolean,
-        val authenticated: Boolean,
-        val txrate: Int,
-        val uptime: Int,
-        val txbytes: Long,
-        val rxbytes: Long,
-        val ht: Int,
-        val mode: String,
-        val gi: Int,
-        val rssi: Int,
-        val mcs: Int,
-        val txss: Int,
-        val ebf: String,
-        @JsonProperty("dl-mu")
-        val dl_mu: String,
-        val _11: List<String>?,
-        val roam: String?,
-        val security: String,
-    )
-}
+    val station: List<RciStationAssociation>,
+)
 
 data class RciIpHotspotHost(
     val mac: String,
